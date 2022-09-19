@@ -1,6 +1,7 @@
 import { Profile, signIn, state } from './store.ts';
 
-const baseUrl = 'http://localhost:8000/api/';
+// const baseUrl = 'http://localhost:8000/';
+const apiUrl = '/api/';
 
 // deno-lint-ignore no-explicit-any
 export async function fetchCors(url: string, method: string, body: any = undefined) {
@@ -16,7 +17,7 @@ export async function fetchCors(url: string, method: string, body: any = undefin
     body: o
   } as RequestInit;
 
-  const res = (await fetch(baseUrl + url, req));
+  const res = (await fetch(apiUrl + url, req));
   if (!res.headers.get('content-type')?.startsWith('application/json'))
     throw await res.text();
 
