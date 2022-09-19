@@ -11,7 +11,6 @@ export const handler: Handlers = {
   async POST(req) {
     const { message } = await req.json();
     const user = await getUser(req);
-    console.log(user, message);
 
     await client.queryArray
       `insert into post("userId", message) values(${user.id}, ${message})`;

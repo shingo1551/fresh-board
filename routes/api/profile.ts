@@ -1,9 +1,25 @@
-import { HandlerContext } from "$fresh/server.ts";
+import { Handlers } from "$fresh/server.ts";
 import { client } from '../../shared/postgres.ts';
+import { getUser } from '../../shared/jwt.ts';
 
-export const handler = async (_req: Request, _ctx: HandlerContext) => {
-  const result = await client.queryObject
-    `select name, message, "createdAt" from post p1 join profile p2 on p1."userId"=p2."userId"`;
+export const handler: Handlers = {
+  async GET() {
+    const user = await getUser(req);
+    const result = await client.queryObject
+      `select name, "birthDay", phone from profile where "userId"=${user.id}`;
+    return Response.json(result.rows);
+  },
+  async PUT(req) {
+    try {
+      const { name, phone, birth } = await req.json();
+      const user = await getUser(req);
 
-  return Response.json(result.rows);
+      await client.queryArray
+        `update profile set name=${name}, "birthDay"=${birth}, phone=${phone} where "userId"=${user.id}`;
+
+      return Response.json({ name, phone, birth });
+    } catch (_e) {
+      return new Response('error');
+    }
+  }
 };

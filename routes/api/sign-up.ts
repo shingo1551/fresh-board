@@ -43,8 +43,6 @@ export const handler: Handlers = {
 
       return Response.json({ profile: res2.rows[0] });
     } catch (_e) {
-      console.log(_e);
-      await transaction.rollback();
       return new Response('error');
     }
   }
