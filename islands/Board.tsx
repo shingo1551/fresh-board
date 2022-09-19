@@ -2,13 +2,7 @@ import { Component } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { fetchCors } from '../shared/fetch.ts';
 import { state } from '../shared/store.ts';
-
-interface Post {
-  message: string;
-  createdAt: Date;
-  name: string;
-}
-export type Posts = Post[] | null;
+import { Post, Posts, cnvPosts } from '../shared/posts.ts';
 
 export default class Board extends Component<{ posts: Posts }, { posts: Posts }> {
   div: HTMLDivElement | undefined | null;
@@ -20,13 +14,10 @@ export default class Board extends Component<{ posts: Posts }, { posts: Posts }>
     }, 300);
   }
 
-  cnvPosts = (posts: { message: string; createdAt: string; name: string; }[]) =>
-    posts.map(post => ({ ...post, createdAt: new Date(post.createdAt) }));
-
   // deno-lint-ignore no-explicit-any
   fetchPost = async (method: string, body: any = undefined) => {
     try {
-      this.setState({ posts: this.cnvPosts(await fetchCors('post', method, body)) });
+      this.setState({ posts: cnvPosts(await fetchCors('post', method, body)) });
       this.scroll();
     } catch (_e) {
       location.href = '/signin';
@@ -43,7 +34,7 @@ export default class Board extends Component<{ posts: Posts }, { posts: Posts }>
 
   componentDidMount() {
     if (IS_BROWSER) {
-      this.setState(this.props);
+      this.setState({ posts: cnvPosts(this.props.posts) });
       this.scroll();
     }
   }
