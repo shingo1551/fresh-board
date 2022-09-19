@@ -36,6 +36,15 @@ export function signOut() {
   saveStorage();
 }
 
+export function setProfile(profile: Profile) {
+  state.value = {
+    jwt: state.value.jwt,
+    profile: profile,
+    isSignIn: !!profile
+  }
+  saveStorage();
+}
+
 //
 function loadStorage() {
   const str = storage.getItem('state');

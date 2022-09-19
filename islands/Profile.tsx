@@ -1,6 +1,6 @@
 import { Component } from "preact";
 
-import { state } from '../shared/store.ts';
+import { state, setProfile } from '../shared/store.ts';
 import { fetchCors } from '../shared/fetch.ts';
 
 export default class Profile extends Component {
@@ -17,7 +17,7 @@ export default class Profile extends Component {
       birth: this.birth?.value,
       phone: this.phone?.value
     }
-    await fetchCors('profile', 'put', body);
+    setProfile(await fetchCors('profile', 'put', body))
     location.href = '/board';
   }
 

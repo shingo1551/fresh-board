@@ -3,7 +3,7 @@ import { client } from '../../shared/postgres.ts';
 import { getUser } from '../../shared/jwt.ts';
 
 export const handler: Handlers = {
-  async GET() {
+  async GET(req) {
     const user = await getUser(req);
     const result = await client.queryObject
       `select name, "birthDay", phone from profile where "userId"=${user.id}`;
@@ -17,7 +17,7 @@ export const handler: Handlers = {
       await client.queryArray
         `update profile set name=${name}, "birthDay"=${birth}, phone=${phone} where "userId"=${user.id}`;
 
-      return Response.json({ name, phone, birth });
+      return Response.json({ userId: user.id, name, phone, birthDay: birth });
     } catch (_e) {
       return new Response('error');
     }
