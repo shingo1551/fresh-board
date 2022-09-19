@@ -10,7 +10,7 @@ interface Post {
 }
 export type Posts = Post[] | null;
 
-export default class Board extends Component<{ posts: Posts }> {
+export default class Board extends Component<{ posts: Posts }, { posts: Posts }> {
   div: HTMLDivElement | undefined | null;
   text: HTMLTextAreaElement | undefined | null;
 
@@ -26,7 +26,7 @@ export default class Board extends Component<{ posts: Posts }> {
   // deno-lint-ignore no-explicit-any
   fetchPost = async (method: string, body: any = undefined) => {
     try {
-      this.props = { posts: this.cnvPosts(await fetchCors('post', method, body)) };
+      this.setState({ posts: this.cnvPosts(await fetchCors('post', method, body)) });
       this.scroll();
     } catch (_e) {
       location.href = '/signin';
@@ -42,8 +42,10 @@ export default class Board extends Component<{ posts: Posts }> {
   }
 
   componentDidMount() {
-    if (IS_BROWSER)
+    if (IS_BROWSER) {
+      this.setState(this.props);
       this.scroll();
+    }
   }
 
   render = () => {
@@ -53,7 +55,7 @@ export default class Board extends Component<{ posts: Posts }> {
       <div ref={el => this.div = el} >
         <h2>Board</h2>
         <div>
-          {this.props.posts?.map(post => <Message post={post} />)}
+          {this.state.posts?.map(post => <Message post={post} />)}
         </div>
         <div class='bottom'>
           <div>
