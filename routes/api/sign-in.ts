@@ -1,6 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { client } from '../../shared/postgres.ts';
+import { connect, release } from '../../shared/postgres.ts';
 import { createJwt } from "../../shared/jwt.ts";
 
 interface user {
@@ -19,6 +19,7 @@ interface profile {
 
 export const handler: Handlers = {
   async POST(req) {
+    const client = await connect();
     try {
       const { email, passwd } = await req.json();
       const res1 = await client.queryObject<user>
@@ -34,8 +35,10 @@ export const handler: Handlers = {
       const p = { ...res2.rows[0] }
       const jwt = await createJwt(p.userId, email, p.name);
       return Response.json({ profile: { ...p, id: undefined, userId: undefined }, jwt });
-    } catch (_e) {
+    } catch {
       return new Response('error');
+    } finally {
+      release(client);
     }
   }
 };

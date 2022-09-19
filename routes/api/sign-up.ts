@@ -1,6 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { client } from '../../shared/postgres.ts';
+import { connect, release } from '../../shared/postgres.ts';
 
 interface user {
   id: number;
@@ -18,6 +18,7 @@ interface profile {
 
 export const handler: Handlers = {
   async POST(req) {
+    const client = await connect();
     const transaction = client.createTransaction("t1");
 
     try {
@@ -42,8 +43,10 @@ export const handler: Handlers = {
       await transaction.commit();
 
       return Response.json({ profile: res2.rows[0] });
-    } catch (_e) {
+    } catch {
       return new Response('error');
+    } finally {
+      release(client);
     }
   }
 };
