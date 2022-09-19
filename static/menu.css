@@ -1,0 +1,19 @@
+ul.menu {
+  padding-inline-start: 8px;
+  padding-inline-end: 32px;
+}
+
+ul.menu li {
+  height: 26px;
+  list-style-type: none;
+}
+
+ul.menu li.selected a {
+  color: white;
+  background-color: rgb(88 81 255);
+}
+
+ul.menu a {
+  text-decoration: none;
+  padding: 0.125rem 0.25rem;
+}
