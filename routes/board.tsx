@@ -2,8 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { connect, release } from '../shared/postgres.ts';
 import Head from '../components/Head.tsx';
 import Body from "../components/Body.tsx";
-import Board from '../islands/Board.tsx';
-import { Posts } from '../shared/posts.ts';
+import Board, { Posts } from '../islands/Board.tsx';
 
 export const handler: Handlers<Posts> = {
   async GET(_, ctx) {

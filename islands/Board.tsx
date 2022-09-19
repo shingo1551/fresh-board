@@ -2,7 +2,13 @@ import { Component } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { fetchCors } from '../shared/fetch.ts';
 import { state } from '../shared/store.ts';
-import { Post, Posts, cnvPosts } from '../shared/posts.ts';
+
+interface Post {
+  message: string;
+  createdAt: Date;
+  name: string;
+}
+export type Posts = Post[] | null;
 
 export default class Board extends Component<{ posts: Posts }, { posts: Posts }> {
   div: HTMLDivElement | undefined | null;
@@ -17,7 +23,7 @@ export default class Board extends Component<{ posts: Posts }, { posts: Posts }>
   // deno-lint-ignore no-explicit-any
   fetchPost = async (method: string, body: any = undefined) => {
     try {
-      this.setState({ posts: cnvPosts(await fetchCors('post', method, body)) });
+      this.setState({ posts: await fetchCors('post', method, body) });
       this.scroll();
     } catch (_e) {
       location.href = '/signin';
@@ -34,19 +40,20 @@ export default class Board extends Component<{ posts: Posts }, { posts: Posts }>
 
   componentDidMount() {
     if (IS_BROWSER) {
-      this.setState({ posts: cnvPosts(this.props.posts) });
+      this.setState(this.props);
       this.scroll();
     }
   }
 
   render = () => {
     const d = state.value.isSignIn;
+    const posts = IS_BROWSER ? this.state.posts : this.props.posts;
 
     return (
       <div ref={el => this.div = el} >
         <h2>Board</h2>
         <div>
-          {this.state.posts?.map(post => <Message post={post} />)}
+          {posts?.map(post => <Message post={post} />)}
         </div>
         <div class='bottom'>
           <div>
@@ -61,7 +68,7 @@ export default class Board extends Component<{ posts: Posts }, { posts: Posts }>
 
 const Message = ({ post }: { post: Post }) => (
   <div>
-    <p><span>{post.name}</span> [{post.createdAt.toLocaleString()}]</p>
+    <p><span>{post.name}</span> [{new Date(post.createdAt).toLocaleString()}]</p>
     <p>{post.message}</p>
     <hr />
   </div>
