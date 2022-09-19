@@ -1,7 +1,14 @@
-import { create } from "https://deno.land/x/djwt@v2.7/mod.ts";
-
+import { create, verify } from "https://deno.land/x/djwt@v2.7/mod.ts";
 const key = await crypto.subtle.generateKey({ name: "HMAC", hash: "SHA-512" }, true, ["sign", "verify"]);
+
+export interface User { id: number, email: string, name: string }
 
 export async function createJwt(id: number, email: string, name: string) {
   return await create({ alg: "HS512", typ: "JWT" }, { id, email, name }, key);
+}
+
+export async function getUser(request: Request) {
+  const header = request.headers.get('authorization');
+  const p = await verify(header!.split(' ')[1], key);
+  return p as unknown as User;
 }

@@ -4,7 +4,7 @@ import { fetchCors } from '../shared/fetch.ts';
 
 interface Post {
   message: string;
-  updatedAt: Date;
+  createdAt: Date;
   name: string;
 }
 
@@ -19,15 +19,15 @@ export default class Board extends Component<{}, { posts: Post[] }> {
     }, 300);
   }
 
-  cnvPosts = (posts: { message: string; updatedAt: string; name: string; }[]) =>
-    posts.map(post => ({ ...post, updatedAt: new Date(post.updatedAt) }));
+  cnvPosts = (posts: { message: string; createdAt: string; name: string; }[]) =>
+    posts.map(post => ({ ...post, createdAt: new Date(post.createdAt) }));
 
   // deno-lint-ignore no-explicit-any
   fetchPost = async (method: string, body: any = undefined) => {
     try {
       this.setState({ posts: this.cnvPosts(await fetchCors('post', method, body)) });
       this.scroll();
-    } catch (e) {
+    } catch (_e) {
       location.href = '/signin';
     }
   }
@@ -63,7 +63,7 @@ export default class Board extends Component<{}, { posts: Post[] }> {
 
 const Message = ({ post }: { post: Post }) => (
   <div>
-    <p><span>{post.name}</span> [{post.updatedAt.toLocaleString()}]</p>
+    <p><span>{post.name}</span> [{post.createdAt.toLocaleString()}]</p>
     <p>{post.message}</p>
     <hr />
   </div>
