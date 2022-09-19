@@ -1,15 +1,16 @@
 import { Component } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { fetchCors } from '../shared/fetch.ts';
+import { state } from '../shared/store.ts';
 
 interface Post {
   message: string;
   createdAt: Date;
   name: string;
 }
+export type Posts = Post[] | null;
 
-// deno-lint-ignore ban-types
-export default class Board extends Component<{}, { posts: Post[] }> {
+export default class Board extends Component<{ posts: Posts }> {
   div: HTMLDivElement | undefined | null;
   text: HTMLTextAreaElement | undefined | null;
 
@@ -25,7 +26,7 @@ export default class Board extends Component<{}, { posts: Post[] }> {
   // deno-lint-ignore no-explicit-any
   fetchPost = async (method: string, body: any = undefined) => {
     try {
-      this.setState({ posts: this.cnvPosts(await fetchCors('post', method, body)) });
+      this.props = { posts: this.cnvPosts(await fetchCors('post', method, body)) };
       this.scroll();
     } catch (_e) {
       location.href = '/signin';
@@ -42,23 +43,27 @@ export default class Board extends Component<{}, { posts: Post[] }> {
 
   componentDidMount() {
     if (IS_BROWSER)
-      this.fetchPost('get');
+      this.scroll();
   }
 
-  render = () => (
-    <div ref={el => this.div = el} >
-      <h2>Board</h2>
-      <div>
-        {this.state.posts?.map(post => <Message post={post} />)}
-      </div>
-      <div class='bottom'>
+  render = () => {
+    const d = state.value.isSignIn;
+
+    return (
+      <div ref={el => this.div = el} >
+        <h2>Board</h2>
         <div>
-          <textarea ref={el => this.text = el} ></textarea>
+          {this.props.posts?.map(post => <Message post={post} />)}
         </div>
-        <button onClick={this.onSend}>Send</button>
-      </div>
-    </ div>
-  )
+        <div class='bottom'>
+          <div>
+            <textarea ref={el => this.text = el} disabled={!d}></textarea>
+          </div>
+          <button onClick={this.onSend} disabled={!d}>Send</button>
+        </div>
+      </ div>
+    )
+  }
 }
 
 const Message = ({ post }: { post: Post }) => (

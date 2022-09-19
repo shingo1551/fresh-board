@@ -9,6 +9,5 @@ export async function createJwt(id: number, email: string, name: string) {
 
 export async function getUser(request: Request) {
   const header = request.headers.get('authorization');
-  const p = await verify(header!.split(' ')[1], key);
-  return p as unknown as User;
+  return await verify(header!.split(' ')[1], key) as unknown as User;
 }
