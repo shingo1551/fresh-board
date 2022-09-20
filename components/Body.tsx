@@ -6,7 +6,7 @@ export default function Body(props: { children: ComponentChildren }) {
   return (
     <div>
       <header>
-        <h1 >Fresh Board</h1>
+        <h1>Fresh Board</h1>
       </header>
 
       <main>

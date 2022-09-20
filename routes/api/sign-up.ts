@@ -1,6 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { connect, release } from '../../shared/postgres.ts';
+import { connect, release } from "../../shared/postgres.ts";
 
 interface user {
   id: number;
@@ -29,24 +29,25 @@ export const handler: Handlers = {
       await transaction.begin();
 
       //
-      const res1 = await transaction.queryArray
-        `insert into public.user(email, passwd) values(${email}, ${hash}) returning id`;
+      const res1 = await transaction
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash}) returning id`;
       const userId = res1.rows[0][0] as number;
 
-      await transaction.queryArray
-        `insert into profile(name, "userId") values(${email}, ${userId})`;
+      await transaction
+        .queryArray`insert into profile(name, "userId") values(${email}, ${userId})`;
 
-      const res2 = await transaction.queryObject<profile>
-        `select * from public.profile p where p."userId"=${userId}`;
+      const res2 = await transaction.queryObject<
+        profile
+      >`select * from public.profile p where p."userId"=${userId}`;
 
       //
       await transaction.commit();
 
       return Response.json({ profile: res2.rows[0] });
     } catch {
-      return new Response('error');
+      return new Response("error");
     } finally {
       release(client);
     }
-  }
+  },
 };

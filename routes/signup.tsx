@@ -1,6 +1,6 @@
 import { PageProps } from "$fresh/server.ts";
 
-import Head from '../components/Head.tsx';
+import Head from "../components/Head.tsx";
 import Body from "../components/Body.tsx";
 import Signup from "../islands/Signup.tsx";
 

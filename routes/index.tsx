@@ -1,6 +1,6 @@
 import { PageProps } from "$fresh/server.ts";
 
-import Head from '../components/Head.tsx';
+import Head from "../components/Head.tsx";
 import Body from "../components/Body.tsx";
 
 export default function Index(props: PageProps) {

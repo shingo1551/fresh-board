@@ -1,15 +1,15 @@
 import { ComponentChildren } from "preact";
-import { useRef } from 'preact/hooks';
+import { useRef } from "preact/hooks";
 import { signal } from "@preact/signals";
 
-import { fetchCors } from '../shared/fetch.ts';
+import { fetchCors } from "../shared/fetch.ts";
 
 const err = signal({
   error: null,
   email: false,
   pass1: false,
   pass2: false,
-  disabled: true
+  disabled: true,
 });
 
 export default function Signup() {
@@ -37,8 +37,9 @@ export default function Signup() {
     err.value = {
       ...value,
       error: null,
-      disabled: value.email || value.pass1 || value.pass2 || !email.current?.value
-    }
+      disabled: value.email || value.pass1 || value.pass2 ||
+        !email.current?.value,
+    };
   };
 
   const onSignUp = async (evt: Event) => {
@@ -46,26 +47,43 @@ export default function Signup() {
 
     const body = {
       email: email.current?.value,
-      passwd: passwd1.current?.value
-    }
+      passwd: passwd1.current?.value,
+    };
     try {
-      await fetchCors('sign-up', 'post', body);
-      location.href = '/signin';
+      await fetchCors("sign-up", "post", body);
+      location.href = "/signin";
     } catch (e) {
       err.value = { ...err.value, error: e };
     }
-  }
+  };
 
   return (
     <form class="signup">
       <h1>Sign up</h1>
       <div>
         <Error>{err.value.error}</Error>
-        <input ref={email} onInput={onEmail} autocomplete="username" placeholder="jane@example.com" />
+        <input
+          ref={email}
+          onInput={onEmail}
+          autocomplete="username"
+          placeholder="jane@example.com"
+        />
         {/* <span class='error'>This field is required.</span> */}
-        <input ref={passwd1} onInput={onPasswd1} type="password" autocomplete="new-password" placeholder="password" />
+        <input
+          ref={passwd1}
+          onInput={onPasswd1}
+          type="password"
+          autocomplete="new-password"
+          placeholder="password"
+        />
         {/* <span class='error'>This field is required.</span> */}
-        <input ref={passwd2} onInput={onPasswd2} type="password" autocomplete="new-password" placeholder="password confirm" />
+        <input
+          ref={passwd2}
+          onInput={onPasswd2}
+          type="password"
+          autocomplete="new-password"
+          placeholder="password confirm"
+        />
         {/* <span class='error'>This field is required.</span> */}
       </div>
       <hr />

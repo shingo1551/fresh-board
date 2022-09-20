@@ -5,7 +5,7 @@ const storage = sessionStorage;
 export const state = signal({
   jwt: null as string | null,
   isSignIn: false,
-  profile: {} as Profile
+  profile: {} as Profile,
 });
 
 export interface Profile {
@@ -21,8 +21,8 @@ export function signIn(json: { jwt: string; profile: Profile }) {
     state.value = {
       jwt: json.jwt,
       profile: profile,
-      isSignIn: !!profile
-    }
+      isSignIn: !!profile,
+    };
     saveStorage();
   }
 }
@@ -31,8 +31,8 @@ export function signOut() {
   state.value = {
     jwt: null,
     isSignIn: false,
-    profile: {} as Profile
-  }
+    profile: {} as Profile,
+  };
   saveStorage();
 }
 
@@ -40,16 +40,17 @@ export function setProfile(profile: Profile) {
   state.value = {
     jwt: state.value.jwt,
     profile: profile,
-    isSignIn: !!profile
-  }
+    isSignIn: !!profile,
+  };
   saveStorage();
 }
 
 //
 function loadStorage() {
-  const str = storage.getItem('state');
-  if (str)
+  const str = storage.getItem("state");
+  if (str) {
     state.value = JSON.parse(str);
+  }
 }
 
 function saveStorage() {
@@ -59,8 +60,8 @@ function saveStorage() {
     profile: value.profile,
     isSignIn: value.isSignIn,
   };
-  storage.setItem('state', JSON.stringify(o));
-  console.log('saveStorage', o);
+  storage.setItem("state", JSON.stringify(o));
+  console.log("saveStorage", o);
 }
 
 //

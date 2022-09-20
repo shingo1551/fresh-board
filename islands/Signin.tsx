@@ -1,8 +1,8 @@
-import { useRef, useState } from 'preact/hooks';
+import { useRef, useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
-import { Error } from '../components/Error.tsx';
-import { fetchCors } from '../shared/fetch.ts';
+import { Error } from "../components/Error.tsx";
+import { fetchCors } from "../shared/fetch.ts";
 
 export default function Signin() {
   const email = useRef<HTMLInputElement>(null);
@@ -15,23 +15,32 @@ export default function Signin() {
 
     const body = {
       email: email.current?.value,
-      passwd: passwd.current?.value
-    }
+      passwd: passwd.current?.value,
+    };
     try {
-      await fetchCors('sign-in', 'post', body);
-      location.href = '/board';
+      await fetchCors("sign-in", "post", body);
+      location.href = "/board";
     } catch (e) {
       setError(e);
     }
-  }
+  };
 
   return (
     <form class="signin">
       <h1>Sign in</h1>
       <div>
         <Error>{error}</Error>
-        <input ref={email} autocomplete="username" placeholder="jane@example.com" />
-        <input ref={passwd} type="password" autocomplete="new-password" placeholder="password" />
+        <input
+          ref={email}
+          autocomplete="username"
+          placeholder="jane@example.com"
+        />
+        <input
+          ref={passwd}
+          type="password"
+          autocomplete="new-password"
+          placeholder="password"
+        />
       </div>
       <hr />
       <button onClick={onSignIn} disabled={!IS_BROWSER}>Sign in</button>

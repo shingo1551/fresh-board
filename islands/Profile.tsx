@@ -1,7 +1,7 @@
 import { Component } from "preact";
 
-import { state, setProfile } from '../shared/store.ts';
-import { fetchCors } from '../shared/fetch.ts';
+import { setProfile, state } from "../shared/store.ts";
+import { fetchCors } from "../shared/fetch.ts";
 
 export default class Profile extends Component {
   profile = state.value.profile;
@@ -15,19 +15,31 @@ export default class Profile extends Component {
     const body = {
       name: this.name?.value,
       birth: this.birth?.value,
-      phone: this.phone?.value
-    }
-    setProfile(await fetchCors('profile', 'put', body))
-    location.href = '/board';
-  }
+      phone: this.phone?.value,
+    };
+    setProfile(await fetchCors("profile", "put", body));
+    location.href = "/board";
+  };
 
   render = () => (
-    <form class="profile" >
+    <form class="profile">
       <h1>Profile</h1>
       <div>
-        <input ref={el => this.name = el} value={this.profile.name} placeholder='山田 太郎' />
-        <input ref={el => this.birth = el} value={this.profile.birthDay} type='date' />
-        <input ref={el => this.phone = el} value={this.profile.phone} placeholder='090-123-4567' />
+        <input
+          ref={(el) => this.name = el}
+          value={this.profile.name}
+          placeholder="山田 太郎"
+        />
+        <input
+          ref={(el) => this.birth = el}
+          value={this.profile.birthDay}
+          type="date"
+        />
+        <input
+          ref={(el) => this.phone = el}
+          value={this.profile.phone}
+          placeholder="090-123-4567"
+        />
       </div>
       <hr />
       <button onClick={this.onApply}>Apply</button>

@@ -1,6 +1,6 @@
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { connect, release } from '../../shared/postgres.ts';
+import { connect, release } from "../../shared/postgres.ts";
 import { createJwt } from "../../shared/jwt.ts";
 
 interface user {
@@ -22,23 +22,29 @@ export const handler: Handlers = {
     const client = await connect();
     try {
       const { email, passwd } = await req.json();
-      const res1 = await client.queryObject<user>
-        `select * from public.user where email=${email}`;
+      const res1 = await client.queryObject<
+        user
+      >`select * from public.user where email=${email}`;
 
       const row = res1.rows[0];
-      if (!await bcrypt.compare(passwd, row.passwd))
-        return new Response('error');
+      if (!await bcrypt.compare(passwd, row.passwd)) {
+        return new Response("error");
+      }
 
-      const res2 = await client.queryObject<profile>
-        `select * from public.profile p where p."userId"=${row.id}`;
+      const res2 = await client.queryObject<
+        profile
+      >`select * from public.profile p where p."userId"=${row.id}`;
 
-      const p = { ...res2.rows[0] }
+      const p = { ...res2.rows[0] };
       const jwt = await createJwt(p.userId, email, p.name);
-      return Response.json({ profile: { ...p, id: undefined, userId: undefined }, jwt });
+      return Response.json({
+        profile: { ...p, id: undefined, userId: undefined },
+        jwt,
+      });
     } catch {
-      return new Response('error');
+      return new Response("error");
     } finally {
       release(client);
     }
-  }
+  },
 };
