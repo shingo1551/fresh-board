@@ -1,6 +1,7 @@
 import { signal } from "@preact/signals";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
-const storage = sessionStorage;
+const storage = IS_BROWSER ? sessionStorage : null;
 
 export const state = signal({
   jwt: null as string | null,
@@ -47,7 +48,7 @@ export function setProfile(profile: Profile) {
 
 //
 function loadStorage() {
-  const str = storage.getItem("state");
+  const str = storage!.getItem("state");
   if (str) {
     state.value = JSON.parse(str);
   }
@@ -60,9 +61,10 @@ function saveStorage() {
     profile: value.profile,
     isSignIn: value.isSignIn,
   };
-  storage.setItem("state", JSON.stringify(o));
+  storage!.setItem("state", JSON.stringify(o));
   console.log("saveStorage", o);
 }
 
 //
-loadStorage();
+if (IS_BROWSER)
+  loadStorage();
