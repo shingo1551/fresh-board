@@ -3,9 +3,9 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { fetchCors } from "../shared/fetch.ts";
 import { state } from "../shared/store.ts";
 
-interface Post {
+export interface Post {
   message: string;
-  createdAt: Date;
+  createdAt: number;
   name: string;
 }
 export type Posts = Post[] | null;

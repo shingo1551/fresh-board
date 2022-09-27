@@ -1,5 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { connect, release } from "../shared/postgres.ts";
+import { connect, release, getPosts } from "../shared/postgres.ts";
 import Head from "../components/Head.tsx";
 import Body from "../components/Body.tsx";
 import Board, { Posts } from "../islands/Board.tsx";
@@ -8,10 +8,7 @@ export const handler: Handlers<Posts> = {
   async GET(_, ctx) {
     const client = await connect();
     try {
-      const result = await client
-        .queryObject`select name, message, "createdAt" from post p1 join profile p2 on p1."userId"=p2."userId"`;
-      console.log(result.rows.map(row => new Date(row.createdAt).getTime()));
-      return ctx.render(result.rows as Posts);
+      return ctx.render(await getPosts(client));
     } catch {
       return ctx.render(null);
     } finally {

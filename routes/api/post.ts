@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { connect, release } from "../../shared/postgres.ts";
+import { connect, release, getPosts } from "../../shared/postgres.ts";
 import { getUser } from "../../shared/jwt.ts";
 
 export const handler: Handlers = {
@@ -25,10 +25,7 @@ export const handler: Handlers = {
 async function query() {
   const client = await connect();
   try {
-    const result = await client
-      .queryObject`select name, message, "createdAt" from post p1 join profile p2 on p1."userId"=p2."userId"`;
-    console.log(result.rows);
-    return Response.json(result.rows);
+    return Response.json(await getPosts(client));
   } catch {
     return new Response("error");
   } finally {
