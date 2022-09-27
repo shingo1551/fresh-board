@@ -66,5 +66,6 @@ function saveStorage() {
 }
 
 //
-if (IS_BROWSER)
+if (IS_BROWSER) {
   loadStorage();
+}
