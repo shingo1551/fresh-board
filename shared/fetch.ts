@@ -3,10 +3,10 @@ import { Profile, signIn, state } from "./store.ts";
 // const baseUrl = 'http://localhost:8000/';
 const apiUrl = "/api/";
 
-// deno-lint-ignore no-explicit-any
 export async function fetchCors(
   url: string,
   method: string,
+  // deno-lint-ignore no-explicit-any
   body: any = undefined,
 ) {
   const jwt = state.value.jwt;

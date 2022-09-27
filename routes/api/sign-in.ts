@@ -1,5 +1,5 @@
 // import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
-import * as bcrypt from "../../shared/bcrypt.ts";
+import { verify } from "https://deno.land/x/scrypt@v4.2.1/mod.ts";
 import { Handlers } from "$fresh/server.ts";
 import { connect, release } from "../../shared/postgres.ts";
 import { createJwt } from "../../shared/jwt.ts";
@@ -28,7 +28,7 @@ export const handler: Handlers = {
       >`select * from public.user where email=${email}`;
 
       const row = res1.rows[0];
-      if (!await bcrypt.compare(passwd, row.passwd)) {
+      if (!verify(passwd, row.passwd)) {
         return new Response("error");
       }
 

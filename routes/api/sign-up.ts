@@ -1,5 +1,5 @@
 // import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
-import * as bcrypt from "../../shared/bcrypt.ts";
+import { hash } from "https://deno.land/x/scrypt@v4.2.1/mod.ts";
 import { Handlers } from "$fresh/server.ts";
 import { connect, release } from "../../shared/postgres.ts";
 
@@ -24,14 +24,13 @@ export const handler: Handlers = {
 
     try {
       const { email, passwd } = await req.json();
-      const hash = await bcrypt.hash(passwd);
 
       //
       await transaction.begin();
 
       //
       const res1 = await transaction
-        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash}) returning id`;
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash(passwd)}) returning id`;
       const userId = res1.rows[0][0] as number;
 
       await transaction
