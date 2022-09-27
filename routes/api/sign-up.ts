@@ -1,4 +1,5 @@
-import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
+// import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.0/mod.ts";
+import * as bcrypt from "../../shared/bcrypt.ts";
 import { Handlers } from "$fresh/server.ts";
 import { connect, release } from "../../shared/postgres.ts";
 
