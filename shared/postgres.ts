@@ -27,6 +27,6 @@ export async function getPosts(client: PoolClient) {
   const result = await client
     .queryObject<Post>`select name, message, "createdAt" from post p1 join profile p2 on p1."userId"=p2."userId"`;
   const rows = result.rows.map(row => ({ ...row, createdAt: new Date(row.createdAt).getTime() }));
-  console.log(rows);
+  console.log(result.rows, rows);
   return rows;
 }
