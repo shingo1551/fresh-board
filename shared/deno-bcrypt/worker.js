@@ -1,7 +1,6 @@
 import * as bcrypt from "./bcrypt/bcrypt.ts";
 
-// deno-lint-ignore no-explicit-any
-const context: Worker = self as any;
+const context = self;
 
 context.onmessage = (event) => {
   const data = event.data;
@@ -19,7 +18,7 @@ context.onmessage = (event) => {
       break;
     }
     case "compare": {
-      let result: boolean;
+      let result;
       try {
         result = bcrypt.checkpw(data.payload.plaintext, data.payload.hash);
       } catch {
