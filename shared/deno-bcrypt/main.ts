@@ -14,7 +14,7 @@ export function hash(
   salt: string | undefined = undefined,
 ): Promise<string> {
   const worker = new Worker(
-    new URL("worker.ts", import.meta.url).toString(),
+    new URL("./worker.ts", import.meta.url).toString(),
     { type: "module" },
   );
 
@@ -46,7 +46,7 @@ export function genSalt(
   log_rounds: number | undefined = undefined,
 ): Promise<string> {
   const worker = new Worker(
-    new URL("worker.ts", import.meta.url).toString(),
+    new URL("./worker.ts", import.meta.url).toString(),
     { type: "module" },
   );
 
@@ -79,7 +79,7 @@ export function compare(
   hash: string,
 ): Promise<boolean> {
   const worker = new Worker(
-    new URL("worker.ts", import.meta.url).toString(),
+    new URL("./worker.ts", import.meta.url).toString(),
     { type: "module" },
   );
 
