@@ -41,7 +41,8 @@ export const handler: Handlers = {
         profile: { ...p, id: undefined, userId: undefined },
         jwt,
       });
-    } catch {
+    } catch (e) {
+      console.log(e);
       return new Response("error");
     } finally {
       release(client);
