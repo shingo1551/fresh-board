@@ -44,7 +44,8 @@ export const handler: Handlers = {
       await transaction.commit();
 
       return Response.json({ profile: res2.rows[0] });
-    } catch {
+    } catch (e) {
+      console.log(e);
       return new Response("error");
     } finally {
       release(client);
