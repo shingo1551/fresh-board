@@ -10,7 +10,7 @@ export const handler: Handlers<Posts> = {
     try {
       const result = await client
         .queryObject`select name, message, "createdAt" from post p1 join profile p2 on p1."userId"=p2."userId"`;
-      console.log(result.rows);
+      console.log(result.rows.map(row => new Date(row.createdAt).getTime()));
       return ctx.render(result.rows as Posts);
     } catch {
       return ctx.render(null);
