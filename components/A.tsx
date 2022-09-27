@@ -8,7 +8,8 @@ interface Props {
 }
 
 export default function A(props: Props) {
-  const selected = props.href === location?.pathname ? "selected" : undefined;
+  const path = IS_BROWSER ? location?.pathname : null;
+  const selected = props.href === path ? "selected" : undefined;
 
   return (
     <li class={selected}>
