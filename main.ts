@@ -9,5 +9,7 @@ import manifest from "./fresh.gen.ts";
 
 import { Env } from "https://deno.land/x/env@v2.2.1/env.js";
 const env = new Env();
+console.log(env.get("LANG"));
+
 const port = +(env.get("PORT") as string);
 await start(manifest, port ? { port } : undefined);
