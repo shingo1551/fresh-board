@@ -10,7 +10,7 @@ export const handler: Handlers<Posts> = {
     try {
       return ctx.render(await getPosts(client));
     } catch (e) {
-      console.log(e);
+      console.warn(e);
       return ctx.render(null);
     } finally {
       release(client);

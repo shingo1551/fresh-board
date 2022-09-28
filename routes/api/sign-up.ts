@@ -40,7 +40,7 @@ export const handler: Handlers = {
       const row = { ...res2.rows[0] };
       return Response.json({ profile: { ...row, id: row.id.toString(), userId: undefined } });
     } catch (e) {
-      console.log(e);
+      console.warn(e);
       return new Response("error");
     } finally {
       release(client);

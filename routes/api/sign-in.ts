@@ -42,7 +42,7 @@ export const handler: Handlers = {
         jwt,
       });
     } catch (e) {
-      console.log(e);
+      console.warn(e);
       return new Response("error");
     } finally {
       release(client);
