@@ -9,7 +9,8 @@ export const handler: Handlers<Posts> = {
     const client = await connect();
     try {
       return ctx.render(await getPosts(client));
-    } catch {
+    } catch (e) {
+      console.log(e);
       return ctx.render(null);
     } finally {
       release(client);

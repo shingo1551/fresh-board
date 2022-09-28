@@ -11,10 +11,13 @@ export const handler: Handlers = {
     try {
       const { message } = await req.json();
       const user = await getUser(req);
+      const date = new Date();
+      console.log(date, -date.getTimezoneOffset() / 60);
       await client
-        .queryArray`insert into post("userId", message) values(${user.id}, ${message})`;
+        .queryArray`insert into post("userId", message, "createdAt") values(${user.id}, ${message}, ${date.getTime()})`;
       return query();
-    } catch {
+    } catch (e) {
+      console.log(e);
       return new Response("error");
     } finally {
       release(client);
