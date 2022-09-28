@@ -10,11 +10,11 @@ interface user {
 }
 
 interface profile {
-  id: number;
+  id: bigint;
   name: string;
   birthDay: string;
   phone: string;
-  userId: number;
+  userId: bigint;
 }
 
 export const handler: Handlers = {

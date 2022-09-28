@@ -2,18 +2,12 @@ import { hash } from "https://deno.land/x/scrypt@v4.2.1/mod.ts";
 import { Handlers } from "$fresh/server.ts";
 import { connect, release } from "../../shared/postgres.ts";
 
-interface user {
-  id: number;
-  email: string;
-  passwd: string;
-}
-
 interface profile {
-  id: number;
+  id: bigint;
   name: string;
   birthDay: string;
   phone: string;
-  userId: number;
+  userId: bigint;
 }
 
 export const handler: Handlers = {
@@ -29,9 +23,8 @@ export const handler: Handlers = {
 
       //
       const res1 = await transaction
-        .queryArray`insert into public.user(email, passwd) values(${email}, ${
-        hash(passwd)
-      }) returning id`;
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash(passwd)
+        }) returning id`;
       const userId = res1.rows[0][0] as number;
 
       await transaction
@@ -44,7 +37,8 @@ export const handler: Handlers = {
       //
       await transaction.commit();
 
-      return Response.json({ profile: res2.rows[0] });
+      const row = { ...res2.rows[0] };
+      return Response.json({ profile: { ...row, id: row.id.toString(), userId: undefined } });
     } catch (e) {
       console.log(e);
       return new Response("error");

@@ -6,13 +6,13 @@ const key = await crypto.subtle.generateKey(
 );
 
 export interface User {
-  id: number;
+  id: bigint;
   email: string;
   name: string;
 }
 
-export async function createJwt(id: number, email: string, name: string) {
-  return await create({ alg: "HS512", typ: "JWT" }, { id, email, name }, key);
+export async function createJwt(id: bigint, email: string, name: string) {
+  return await create({ alg: "HS512", typ: "JWT" }, { id: id.toString(), email, name }, key);
 }
 
 export async function getUser(request: Request) {
