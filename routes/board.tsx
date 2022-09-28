@@ -8,6 +8,8 @@ export const handler: Handlers<Posts> = {
   async GET(_, ctx) {
     const client = await connect();
     try {
+      const date = new Date();
+      console.info(date, -date.getTimezoneOffset() / 60);
       return ctx.render(await getPosts(client));
     } catch (e) {
       console.warn(e);
