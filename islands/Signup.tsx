@@ -2,34 +2,40 @@ import { useRef, useState } from "preact/hooks";
 import { fetchCors } from "../shared/fetch.ts";
 
 export default function Signup() {
-  const email = useRef<HTMLInputElement>(null);
-  const passwd1 = useRef<HTMLInputElement>(null);
-  const passwd2 = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState({ value: '', error: '', dirty: false });
+  const [pass1, setPass1] = useState({ value: '', error: '', dirty: false });
+  const [pass2, setPass2] = useState({ value: '', error: '', dirty: false });
 
-  const [msgError, setError] = useState("");
-  const [msgEmail, setEmail] = useState("");
-  const [msgPass1, setPass1] = useState("");
-  const [msgPass2, setPass2] = useState("");
-  const [disabled, setDisabled] = useState(true);
+  const onEmail = (e: Event) => {
+    const value = (e.target as HTMLInputElement).value;
+    setEmail({ value, error: value ? '' : "必須入力です", dirty: true });
+  }
 
-  const buttonDisabled = () => {
-    setEmail(!email.current?.value ? "必須入力です" : "");
-    setPass1(!passwd1.current?.value ? "必須入力です" : "");
-    setPass2(
-      passwd1.current?.value !== passwd2.current?.value ? "パスワードが一致しません" : "",
-    );
-    setDisabled(
-      !email.current?.value || !passwd1.current?.value ||
-        passwd1.current?.value !== passwd2.current?.value,
-    );
+  const onPass1 = (e: Event) => {
+    const value = (e.target as HTMLInputElement).value;
+    setPass1({ value, error: value ? '' : "必須入力です", dirty: true });
+  }
+
+  const onPass2 = (e: Event) => {
+    const value = (e.target as HTMLInputElement).value;
+    setPass2({ value, error: value === pass1.value ? '' : "パスワードが一致しません", dirty: true });
+  }
+
+  const isValid = (state: { value: string, error: string, dirty: boolean }) => {
+    return !state.error && state.dirty;
+  };
+
+  const disabled = () => {
+    return !(isValid(email) && isValid(pass1) && isValid(pass2));
   };
 
   const onSignUp = async (evt: Event) => {
     evt.preventDefault();
 
     const body = {
-      email: email.current?.value,
-      passwd: passwd1.current?.value,
+      email: email.value,
+      passwd: pass1.value,
     };
     try {
       await fetchCors("sign-up", "post", body);
@@ -43,33 +49,30 @@ export default function Signup() {
     <form class="signup">
       <h1>Sign up</h1>
       <div>
-        <span class="error">{msgError}</span>
+        <span class="error">{error}</span>
         <input
-          ref={email}
-          onInput={buttonDisabled}
+          onInput={onEmail}
           autocomplete="username"
           placeholder="jane@example.com"
         />
-        <span class="error">{msgEmail}</span>
+        <span class="error">{email.error}</span>
         <input
-          ref={passwd1}
-          onInput={buttonDisabled}
+          onInput={onPass1}
           type="password"
           autocomplete="new-password"
           placeholder="password"
         />
-        <span class="error">{msgPass1}</span>
+        <span class="error">{pass1.error}</span>
         <input
-          ref={passwd2}
-          onInput={buttonDisabled}
+          onInput={onPass2}
           type="password"
           autocomplete="new-password"
           placeholder="password confirm"
         />
-        <span class="error">{msgPass2}</span>
+        <span class="error">{pass2.error}</span>
       </div>
       <hr />
-      <button onClick={onSignUp} disabled={disabled}>Sign up</button>
+      <button onClick={onSignUp} disabled={disabled()}>Sign up</button>
     </form>
   );
 }
