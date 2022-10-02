@@ -27,7 +27,10 @@ export default function Signup() {
   };
 
   const disabled = () => {
-    return !(isValid(email) && isValid(pass1) && isValid(pass2));
+    let valid = true;
+    [email, pass1, pass2].forEach(state => valid &&= isValid(state));
+    return !valid;
+    // return !(isValid(email) && isValid(pass1) && isValid(pass2));
   };
 
   const onSignUp = async (evt: Event) => {
