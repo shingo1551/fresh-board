@@ -23,7 +23,12 @@ export const handler: Handlers = {
       const user = await getUser(req);
       await client
         .queryArray`update profile set name=${name}, "birthDay"=${birth}, phone=${phone} where "userId"=${user.id}`;
-      return Response.json({ userId: user.id.toString(), name, phone, birthDay: birth });
+      return Response.json({
+        userId: user.id.toString(),
+        name,
+        phone,
+        birthDay: birth,
+      });
     } catch {
       return new Response("error");
     } finally {

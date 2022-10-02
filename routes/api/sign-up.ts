@@ -23,8 +23,9 @@ export const handler: Handlers = {
 
       //
       const res1 = await transaction
-        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash(passwd)
-        }) returning id`;
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${
+        hash(passwd)
+      }) returning id`;
       const userId = res1.rows[0][0] as number;
 
       await transaction
@@ -38,7 +39,9 @@ export const handler: Handlers = {
       await transaction.commit();
 
       const row = { ...res2.rows[0] };
-      return Response.json({ profile: { ...row, id: row.id.toString(), userId: undefined } });
+      return Response.json({
+        profile: { ...row, id: row.id.toString(), userId: undefined },
+      });
     } catch (e) {
       console.warn(e);
       return new Response("error");

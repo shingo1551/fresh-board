@@ -12,7 +12,11 @@ export interface User {
 }
 
 export async function createJwt(id: bigint, email: string, name: string) {
-  return await create({ alg: "HS512", typ: "JWT" }, { id: id.toString(), email, name }, key);
+  return await create({ alg: "HS512", typ: "JWT" }, {
+    id: id.toString(),
+    email,
+    name,
+  }, key);
 }
 
 export async function getUser(request: Request) {
