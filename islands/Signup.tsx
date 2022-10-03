@@ -15,11 +15,15 @@ export default function Signup() {
   const onPass1 = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
     setPass1({ value, error: value ? '' : "必須入力です", dirty: true });
+    _setPass2(value, pass2.value);
   }
 
   const onPass2 = (e: Event) => {
-    const value = (e.target as HTMLInputElement).value;
-    setPass2({ value, error: value === pass1.value ? '' : "パスワードが一致しません", dirty: true });
+    _setPass2(pass1.value, (e.target as HTMLInputElement).value)
+  }
+
+  const _setPass2 = (value1: string, value2: string) => {
+    setPass2({ value: value2, error: value1 === value2 ? '' : "パスワードが一致しません", dirty: true });
   }
 
   const isValid = (state: { value: string, error: string, dirty: boolean }) => {
