@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
-import { connect, getPosts, release } from "../../shared/postgres.ts";
-import { getUser } from "../../shared/jwt.ts";
+import { connect, getPosts, release } from "../../shared/api/postgres.ts";
+import { getUser } from "../../shared/api/jwt.ts";
 
 export const handler: Handlers = {
   async GET() {

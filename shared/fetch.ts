@@ -16,7 +16,7 @@ export async function fetchCors(
   const req = {
     method: method,
     headers: headers,
-    mode: "cors" as RequestMode,
+    // mode: "cors" as RequestMode,
     cache: "no-cache" as RequestCache,
     body: o,
   } as RequestInit;

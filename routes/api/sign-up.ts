@@ -1,6 +1,6 @@
 import { hash } from "https://deno.land/x/scrypt@v4.2.1/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { connect, release } from "../../shared/postgres.ts";
+import { connect, release } from "../../shared/api/postgres.ts";
 
 interface profile {
   id: bigint;
@@ -23,9 +23,8 @@ export const handler: Handlers = {
 
       //
       const res1 = await transaction
-        .queryArray`insert into public.user(email, passwd) values(${email}, ${
-        hash(passwd)
-      }) returning id`;
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash(passwd)
+        }) returning id`;
       const userId = res1.rows[0][0] as number;
 
       await transaction

@@ -1,7 +1,7 @@
 import { verify } from "https://deno.land/x/scrypt@v4.2.1/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import { connect, release } from "../../shared/postgres.ts";
-import { createJwt } from "../../shared/jwt.ts";
+import { connect, release } from "../../shared/api/postgres.ts";
+import { createJwt } from "../../shared/api/jwt.ts";
 
 interface user {
   id: number;

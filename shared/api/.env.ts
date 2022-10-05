@@ -7,7 +7,7 @@ export const config = {
   tls: {
     caCertificates: [
       await Deno.readTextFile(
-        new URL("../prod-ca-2021.crt", import.meta.url),
+        new URL("./prod-ca-2021.crt", import.meta.url),
       ),
     ],
     enabled: false,

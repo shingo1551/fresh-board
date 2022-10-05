@@ -1,9 +1,7 @@
 {
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ dev.ts",
-    "serve": "deno run -A dev.ts",
-    "serve-1": "export DENO_DEPLOYMENT_ID=1 && deno run -A dev.ts",
-    "heroku": "export PORT=8080 && deno run -A main.ts"
+    "serve": "export DENO_DEPLOYMENT_ID=1 && deno run -A main.ts"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
