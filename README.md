@@ -16,5 +16,8 @@ https://fresh-board.deno.dev
 
 ## install
 
-deno install --import-map=./Documents/github/fresh-board/import_map.json
---allow-net --allow-read -n fresh-board ~/Documents/github/fresh-board/main.ts
+```bash
+deno install --import-map=./Documents/github/fresh-board/import_map.json \
+    --allow-run --allow-env --allow-net --allow-read --allow-write -n fresh-board \
+    ~/Documents/github/fresh-board/main.ts
+```
