@@ -13,5 +13,3 @@ export const config = {
     enabled: false,
   },
 };
-// postgres://postgres:[YOUR-PASSWORD]@db.uffutgvhycnzromcrulu.supabase.co:6543/postgres
-// postgresql://postgres:[YOUR-PASSWORD]@db.uffutgvhycnzromcrulu.supabase.co:5432/postgres
