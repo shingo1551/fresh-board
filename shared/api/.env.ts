@@ -2,7 +2,7 @@ export const config = {
   database: "postgres",
   hostname: "db.uffutgvhycnzromcrulu.supabase.co",
   password: "Hodogaya502",
-  port: 5432,
+  port: 6543,
   user: "postgres",
   tls: {
     caCertificates: [
@@ -13,3 +13,5 @@ export const config = {
     enabled: false,
   },
 };
+// postgres://postgres:[YOUR-PASSWORD]@db.uffutgvhycnzromcrulu.supabase.co:6543/postgres
+// postgresql://postgres:[YOUR-PASSWORD]@db.uffutgvhycnzromcrulu.supabase.co:5432/postgres
