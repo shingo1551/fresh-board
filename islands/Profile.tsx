@@ -1,30 +1,47 @@
 import { Component } from "preact";
 
-import { setProfile, state } from "../shared/store.ts";
+import { setProfile, signOut, state } from "../shared/store.ts";
 import { fetchCors } from "../shared/fetch.ts";
 
-export default class Profile extends Component {
-  profile = state.value.profile;
+interface State {
+  error: string;
+}
+
+// deno-lint-ignore ban-types
+export default class Profile extends Component<{}, State> {
   name: HTMLInputElement | undefined | null;
   birth: HTMLInputElement | undefined | null;
   phone: HTMLInputElement | undefined | null;
+  profile = state.value.profile;
+
+  componentDidMount() {
+    // if (!state.value.jwt) {
+    //   signOut();
+    //   location.href = "/signin";
+    // }
+  }
 
   onApply = async (ev: Event) => {
     ev.preventDefault();
 
-    const body = {
-      name: this.name?.value,
-      birth: this.birth?.value,
-      phone: this.phone?.value,
-    };
-    setProfile(await fetchCors("profile", "put", body));
-    location.href = "/board";
+    try {
+      const body = {
+        name: this.name?.value,
+        birth: this.birth?.value,
+        phone: this.phone?.value,
+      };
+      setProfile(await fetchCors("profile", "put", body));
+      location.href = "/board";
+    } catch (e) {
+      this.setState({ error: e });
+    }
   };
 
   render = () => (
     <form class="profile">
       <h1>Profile</h1>
       <div>
+        <p>{this.state.error}</p>
         <input
           ref={(el) => this.name = el}
           value={this.profile.name}
