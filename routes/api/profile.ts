@@ -29,10 +29,12 @@ export const handler: Handlers = {
         phone,
         birthDay: birth,
       });
-    } catch {
+    } catch (e) {
+      console.warn(e);
       return new Response("error");
     } finally {
       release(client);
     }
   },
+  OPTIONS() { return new Response(); },
 };
