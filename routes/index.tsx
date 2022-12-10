@@ -12,6 +12,7 @@ export default function Index(props: PageProps) {
       </Head>
       <Body>
         <h1>Home</h1>
+        <img src="https://uffutgvhycnzromcrulu.supabase.co/storage/v1/object/public/board/favicon.ico" />
       </Body>
     </>
   );

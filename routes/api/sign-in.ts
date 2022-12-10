@@ -21,7 +21,6 @@ export const handler: Handlers = {
   async POST(req) {
     const client = await connect();
     try {
-      await static_write();
       const { email, passwd } = await req.json();
       const res1 = await client.queryObject<
         user
@@ -51,15 +50,3 @@ export const handler: Handlers = {
   },
   OPTIONS() { return new Response(); },
 };
-
-async function static_write() {
-  for await (const dirEntry of Deno.readDir("static")) {
-    console.log(dirEntry.name);
-  }
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode("Hello world");
-  const file = await Deno.open("static/bar.txt", { create: true, write: true });
-  await Deno.write(file.rid, data); // 11
-  Deno.close(file.rid);
-}
