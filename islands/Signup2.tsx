@@ -34,13 +34,17 @@ export default class Signup extends Component<{}, State> {
     };
   }
 
+  // 最初の1回だけ呼ばれる(reloadとかも)
+  componentDidMount() {
+    console.log("componentDidMount");
+    this.validation();
+  }
+
   // event handler
   onEmail = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
     sessionStorage.setItem("email", value);
-    this.setState({
-      email: { value, error: value ? "" : "必須入力です", dirty: true },
-    });
+    this.emailValidation(value, true);
   };
 
   onPass1 = (e: Event) => {
@@ -70,6 +74,30 @@ export default class Signup extends Component<{}, State> {
         },
       });
     }
+  };
+
+  //
+  emailValidation = (value: string, dirty: boolean) => {
+    if (dirty) {
+      const regex =
+        /^[a-zA-Z0-9_+-]+(\.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+
+      let error = "";
+      if (!value) {
+        error = "必須入力です";
+      } else if (!regex.test(value)) {
+        error = "正しい形式で入力してください";
+      }
+
+      this.setState({ email: { value, error, dirty: true } });
+    }
+  };
+
+  validation = () => {
+    const state = this.state;
+
+    // 入力項目が多い場合、ここに追加
+    this.emailValidation(state.email.value, state.email.dirty);
   };
 
   // button disabled用
