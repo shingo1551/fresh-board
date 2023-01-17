@@ -19,16 +19,25 @@ interface State {
 export default class Signup extends Component<{}, State> {
   constructor() {
     super();
+
+    const value = sessionStorage.getItem("email");
+    const email = value
+      ? { value, error: "", dirty: true }
+      : { value: "", error: "", dirty: false };
+
+    // constructorで初期値設定、this.setStateを使用しない
     this.state = {
       error: "",
-      email: { value: "", error: "", dirty: false },
+      email,
       pass1: { value: "", error: "", dirty: false },
       pass2: { value: "", error: "", dirty: false },
     };
   }
 
+  // event handler
   onEmail = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
+    sessionStorage.setItem("email", value);
     this.setState({
       email: { value, error: value ? "" : "必須入力です", dirty: true },
     });
@@ -50,6 +59,7 @@ export default class Signup extends Component<{}, State> {
     );
   };
 
+  //
   _setPass2 = (value1: string, value2: string, dirty: boolean) => {
     if (dirty) {
       this.setState({
@@ -62,6 +72,7 @@ export default class Signup extends Component<{}, State> {
     }
   };
 
+  // button disabled用
   isValid = (state: { value: string; error: string; dirty: boolean }) => {
     return !state.error && state.dirty;
   };
@@ -75,6 +86,7 @@ export default class Signup extends Component<{}, State> {
     return !valid;
   };
 
+  // API呼び出し
   onSignUp = async (evt: Event) => {
     evt.preventDefault();
 
@@ -90,6 +102,7 @@ export default class Signup extends Component<{}, State> {
     }
   };
 
+  //
   render() {
     const state = this.state;
 
@@ -100,6 +113,7 @@ export default class Signup extends Component<{}, State> {
           <span class="error">{state.error}</span>
           <input
             onInput={this.onEmail}
+            value={state.email.value}
             autocomplete="username"
             placeholder="jane@example.com"
           />
