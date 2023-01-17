@@ -17,6 +17,16 @@ interface State {
 
 // deno-lint-ignore ban-types
 export default class Signup extends Component<{}, State> {
+  constructor() {
+    super();
+    this.state = {
+      error: "",
+      email: { value: "", error: "", dirty: false },
+      pass1: { value: "", error: "", dirty: false },
+      pass2: { value: "", error: "", dirty: false },
+    };
+  }
+
   onEmail = (e: Event) => {
     const value = (e.target as HTMLInputElement).value;
     this.setState({

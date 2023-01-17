@@ -21,6 +21,7 @@ import * as $$2 from "./islands/Menu.tsx";
 import * as $$3 from "./islands/Profile.tsx";
 import * as $$4 from "./islands/Signin.tsx";
 import * as $$5 from "./islands/Signup.tsx";
+import * as $$6 from "./islands/Signup2.tsx";
 
 const manifest = {
   routes: {
@@ -44,6 +45,7 @@ const manifest = {
     "./islands/Profile.tsx": $$3,
     "./islands/Signin.tsx": $$4,
     "./islands/Signup.tsx": $$5,
+    "./islands/Signup2.tsx": $$6,
   },
   baseUrl: import.meta.url,
   config,
