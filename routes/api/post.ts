@@ -3,7 +3,9 @@ import { connect, getPosts, release } from "../../shared/api/postgres.ts";
 import { getUser } from "../../shared/api/jwt.ts";
 
 export const handler: Handlers = {
-  async GET() { return await query(); },
+  async GET() {
+    return await query();
+  },
   async POST(req) {
     const client = await connect();
     try {
@@ -20,7 +22,9 @@ export const handler: Handlers = {
       release(client);
     }
   },
-  OPTIONS() { return new Response(); },
+  OPTIONS() {
+    return new Response();
+  },
 };
 
 async function query() {

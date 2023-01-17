@@ -23,8 +23,9 @@ export const handler: Handlers = {
 
       //
       const res1 = await transaction
-        .queryArray`insert into public.user(email, passwd) values(${email}, ${hash(passwd)
-        }) returning id`;
+        .queryArray`insert into public.user(email, passwd) values(${email}, ${
+        hash(passwd)
+      }) returning id`;
       const userId = res1.rows[0][0] as number;
 
       await transaction
@@ -48,5 +49,7 @@ export const handler: Handlers = {
       release(client);
     }
   },
-  OPTIONS() { return new Response(); },
+  OPTIONS() {
+    return new Response();
+  },
 };

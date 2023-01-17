@@ -36,5 +36,7 @@ export const handler: Handlers = {
       release(client);
     }
   },
-  OPTIONS() { return new Response(); },
+  OPTIONS() {
+    return new Response();
+  },
 };

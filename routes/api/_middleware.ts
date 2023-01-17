@@ -11,7 +11,10 @@ export async function handler(
   console.log(req.method, req.url);
   const resp = await ctx.next();
   resp.headers.set("Access-Control-Allow-headers", "authorization");
-  resp.headers.set("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+  resp.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET,HEAD,PUT,PATCH,POST,DELETE",
+  );
   resp.headers.set("Access-Control-Allow-Origin", "*");
 
   return resp;

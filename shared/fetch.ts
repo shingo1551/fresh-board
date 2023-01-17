@@ -21,7 +21,7 @@ export async function fetchCors(
     body: o,
   } as RequestInit;
 
-  const res = (await fetch(apiUrl + url, req));
+  const res = await fetch(apiUrl + url, req);
   if (!res.headers.get("content-type")?.startsWith("application/json")) {
     throw await res.text();
   }
