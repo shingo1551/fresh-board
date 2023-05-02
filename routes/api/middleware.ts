@@ -8,7 +8,8 @@ export async function handler(
   req: Request,
   ctx: MiddlewareHandlerContext<State>,
 ) {
-  console.log(req.method, req.url);
+  // console.log(req.method, req.url);
+  console.log(req);
   const resp = await ctx.next();
   resp.headers.set("Access-Control-Allow-headers", "authorization");
   resp.headers.set(
